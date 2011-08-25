@@ -1,4 +1,4 @@
-// Module Dependencies
+/* Module Dependencies */
 
 var express = require('express');
 var redis = require('redis');
@@ -11,16 +11,15 @@ var mailer = require('mailer');
 
 var app = module.exports = express.createServer();
 
-// Stylus Compiler
+/* Configure */
 
+// Stylus Compiler
 function compile(str, path){
   return stylus(str)
     .set('filename', path)
     .set('compress', true)
     .use(nib());
 }
-
-// Configuration
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -42,7 +41,7 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-// Message Helper
+/* Message Helpers */
 
 app.dynamicHelpers({
   success: function(req){
@@ -65,8 +64,9 @@ app.dynamicHelpers({
   }
 });
 
-// Salt Generator
+/* Authentication */
 
+// Salt Generator
 function generateSalt(){
   var text = "";
   var possible= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
@@ -76,12 +76,11 @@ function generateSalt(){
 }
 
 // Generate Hash
-
 function hash(msg, key){
   return crypto.createHmac('sha256', key).update(msg).digest('hex');
 }
 
-// Middleware
+/* Middleware */
 
 function authenticate(username, pass, fn){
   client.get('username:' + username + ':uid', function(err, uid){
@@ -113,6 +112,42 @@ function restrict(req, res, next){
 function accessLogger(req, res, next){
   console.log('/restricted accessed by %s', req.session.user.username);
   next();
+}
+
+function logoutUser(req, res, next){
+  var user = req.session.user;
+  req.session.destroy(function(err){
+    if (err){
+      console.log('Error destroying session...');
+    }
+    else{
+      console.log(user.username + ' has logged out.');
+      next();
+    }
+  });
+}
+
+function loginUser(req, res, next){
+  var usernameLength = req.body.username.length;
+  var passwordLength = req.body.password.length;
+  if (usernameLength == 0 || passwordLength == 0){
+    req.session.error = 'Authentication failed, please enter both a username and password!';
+    res.redirect('back');
+  }
+  else{
+    authenticate(req.body.username, req.body.password, function(err, user){
+      if (user) {
+        req.session.regenerate(function(){
+          req.session.user = user;
+          req.session.success = 'Authenticated as ' + req.session.user.firstname + '.';
+          console.log(req.session.user.username + ' logged in!');
+        });
+      } else {
+        req.session.error = 'Authentication failed, please check your username and password.';
+        res.redirect('back');
+      }
+    });
+  }
 }
 
 function registerUser(req, res, next){
@@ -151,6 +186,7 @@ function registerUser(req, res, next){
             recoveryquestionanswer: recoveryquestionanswer
           }, function(){
             console.log(username + ' has registered!');
+            req.session.success = 'Thanks for registering!  Try <a href="/login">logging in</a>!';
             next()
           });
         });
@@ -159,7 +195,7 @@ function registerUser(req, res, next){
   }
 }
 
-// Route Param Pre-Conditions
+/* Route Param Pre-Conditions */
 
 app.param('user', function(req, res, next, user){
 	if (req.session.user.username == user){
@@ -177,7 +213,7 @@ app.param('user', function(req, res, next, user){
   }
 });
 
-// Routes
+/* Routes */
 
 app.get('/', function(req, res){
   res.render('index', {
@@ -191,17 +227,8 @@ app.get('/restricted', restrict, accessLogger, function(req, res){
   });
 });
 
-app.get('/logout', function(req, res){
-  var user = req.session.user;
-  req.session.destroy(function(err){
-    if (err){
-      console.log('Error destroying session...');
-    }
-    else{
-      console.log(user.username + ' has logged out.');
-      res.redirect('home');
-    }
-  });
+app.get('/logout', logoutUser, function(req, res){
+  res.redirect('home');
 });
 
 app.get('/login', function(req, res){
@@ -211,27 +238,7 @@ app.get('/login', function(req, res){
 });
 
 app.post('/login', function(req, res){
-  var usernameLength = req.body.username.length;
-  var passwordLength = req.body.password.length;
-  if (usernameLength == 0 || passwordLength == 0){
-    req.session.error = 'Authentication failed, please enter both a username and password!';
-    res.redirect('back');
-  }
-  else{
-    authenticate(req.body.username, req.body.password, function(err, user){
-      if (user) {
-        req.session.regenerate(function(){
-          req.session.user = user;
-          req.session.success = 'Authenticated as ' + req.session.user.firstname + '.';
-          console.log(req.session.user.username + ' logged in!');
-          res.redirect('home');
-        });
-      } else {
-        req.session.error = 'Authentication failed, please check your username and password.';
-        res.redirect('back');
-      }
-    });
-  }
+  res.redirect('home');
 });
 
 app.get('/register', function(req, res){
@@ -241,7 +248,6 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', registerUser, function(req, res){
-  req.session.success = 'Thanks for registering!  Try <a href="/login">logging in</a>!';
   res.redirect('back');
 });
 
@@ -265,6 +271,8 @@ app.get('/users/:user/log', function(req, res){
     user: req.session.user
   });
 });
+
+/* Run App */
 
 app.listen(80);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
