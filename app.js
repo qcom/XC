@@ -81,7 +81,7 @@ function hash(msg, key){
   return crypto.createHmac('sha256', key).update(msg).digest('hex');
 }
 
-// Authenticate
+// Middleware
 
 function authenticate(username, pass, fn){
   client.get('username:' + username + ':uid', function(err, uid){
@@ -159,7 +159,7 @@ function registerUser(req, res, next){
   }
 }
 
-// Routes
+// Route Param Pre-Conditions
 
 app.param('user', function(req, res, next, user){
 	if (req.session.user.username == user){
@@ -176,6 +176,8 @@ app.param('user', function(req, res, next, user){
 	  res.send(404);
   }
 });
+
+// Routes
 
 app.get('/', function(req, res){
   res.render('index', {
