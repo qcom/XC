@@ -1,0 +1,36 @@
+!!!
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js')
+    script(src='/javascripts/script.js')
+    div(class='topbar-wrapper', style='z-index: 5;')
+      .topbar
+        .fill
+          .container
+            h3
+              a(href='/') XC
+            ul
+              li
+                a(href='/') Home
+              - if (!session.user)
+                li
+                  a(href='/login') Login
+              - if (!session.user)
+                li
+                  a(href='/register') Register
+            - if (session.user)
+              ul(class='nav secondary-nav')
+                li(class='menu')
+                  a(href='#', class='menu') #{session.user.username}
+                  ul(class='menu-dropdown', style='display: none;')
+                    li
+                      a(href='/user/' + session.user.username) Profile
+                    li
+                      a(href='/logout') Logout
+  body
+    br
+    br
+    br
+    .container!= body

@@ -1,0 +1,46 @@
+ul(class='tabs')
+  li
+    a(href='/user/#{user.username}') Summary
+  li
+    a(href='/user/#{user.username}/edit') Edit
+h1 Edit #{user.username}'s Profile
+form(method='post', action='/register', class='form-stacked')
+  fieldset
+    legend Personal Information
+    .clearfix
+      label First Name
+      .input
+        input(size='30', type='text', name='firstname', value= user.firstname)
+      br
+      label Last Name
+      .input
+        input(size='30', type='text', name='lastname', value= user.lastname)
+      br
+      label Email
+      .input
+        input(size='30', type='text', name='email', value= user.email)
+      br
+      label School
+      .input
+        select(name='school', value= user.school)
+          option Patrick Henry
+  fieldset
+    legend Account Information
+    .clearfix
+      label Username
+      .input
+        input(size='30', type='text', name='username', value= user.username)
+      br
+      label Password
+      .input
+        input(size='30', type='password', name='password')
+      br
+      label Recovery Question
+      .input
+        input(class='xlarge', size='30', type='text', name='recoveryquestion', value= user.recoveryquestion)
+      br
+      label Password Question Answer
+      .input
+        input(class='xlarge', size='30', type='text', name='recoveryquestionanswer', value= user.recoveryquestionanswer)
+      .actions
+        button(type='submit', class='btn primary') Update

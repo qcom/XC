@@ -1,0 +1,14 @@
+h1= title
+!{success}
+!{message}
+!{error}
+form(method='post', action='/login', class='form-stacked')
+  div(class='clearfix')
+    label(for='') Username
+    div(class='input')
+      input(class='xlarge', size='30', type='text', name='username')
+    label(for='') Password
+    div(class='input')
+      input(class='xlarge', size='30', type='password', name='password')
+    div(class='actions')
+      button(type='submit', class='btn primary') Log In
