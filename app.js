@@ -252,7 +252,7 @@ app.post('/register', registerUser, function(req, res){
 });
 
 app.get('/users/:user', function(req, res){
-  res.render('user', {
+  res.render('users', {
 	  title: req.session.user.username + '\'s profile',
     user: req.session.user
   });
