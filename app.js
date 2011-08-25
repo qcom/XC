@@ -140,6 +140,7 @@ function loginUser(req, res, next){
           req.session.user = user;
           req.session.success = 'Authenticated as ' + req.session.user.firstname + '.';
           console.log(req.session.user.username + ' logged in!');
+          next();
         });
       } else {
         req.session.error = 'Authentication failed, please check your username and password.';
