@@ -7,7 +7,6 @@ var RedisStore = require('connect-redis')(express);
 var crypto = require('crypto');
 var stylus = require('stylus');
 var nib = require('nib');
-var mailer = require('mailer');
 
 var app = module.exports = express.createServer();
 
