@@ -6,8 +6,8 @@
       'express'       : '2.4.3'
     , 'stylus'        : '>= 0.0.1'
     , 'jade'          : '>= 0.0.1'
-    , 'nib'           : '0.1.0'
-    , 'redis'         : '0.6.7'
-    , 'connect-redis' : '1.0.7'
+    , 'nib'           : '>= 0.1.0'
+    , 'redis'         : '>= 0.6.7'
+    , 'connect-redis' : '>= 1.0.7'
   }
 }
