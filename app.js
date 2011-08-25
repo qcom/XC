@@ -236,7 +236,7 @@ app.get('/login', function(req, res){
   });
 });
 
-app.post('/login', loginUser, function(req, res){
+app.post('/login', authenticate, loginUser, function(req, res){
   res.redirect('home');
 });
 
