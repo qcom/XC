@@ -137,7 +137,7 @@ module.exports = function(app){
     });
   });
 
-  app.get('/restricted', [handlers.restrict, accessLogger], function(req, res){
+  app.get('/restricted', [restrict, accessLogger], function(req, res){
     res.render('restricted', {
       title: 'Restricted Section'
     });
