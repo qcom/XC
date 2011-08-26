@@ -17,4 +17,5 @@ function auth(){
     return crypto.createHmac('sha256', key).update(msg).digest('hex');
   }
 }
-exports.auth = auth;
+exports.generateSalt = generateSalt;
+exports.hash = hash;
