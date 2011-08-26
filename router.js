@@ -1,4 +1,6 @@
 module.exports = function(app){
+  var handlers = require('handlers.js');
+
   /* Routes */
 
   app.get('/', function(req, res){
@@ -7,7 +9,7 @@ module.exports = function(app){
     });
   });
 
-  app.get('/restricted', [restrict, accessLogger], function(req, res){
+  app.get('/restricted', [handlers.restrict, accessLogger], function(req, res){
     res.render('restricted', {
       title: 'Restricted Section'
     });
