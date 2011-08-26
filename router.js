@@ -1,5 +1,5 @@
 module.exports = function(app){
-  var handlers = require('handlers.js');
+  var handlers = require('./handlers.js');
 
   /* Routes */
 
