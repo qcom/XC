@@ -23,24 +23,6 @@ module.exports = function(app){
 
   /* Middleware */
 
-  /*function authenticate(username, pass, fn){
-    client.get('username:' + username + ':uid', function(err, uid){
-      if (uid !== null){
-        client.hgetall('uid:' + uid, function(err, user){
-          if (user.pass == hash(pass, user.salt)){
-            return fn(null, user);
-          }
-          else{
-            fn(new Error('invalid password'));
-          }
-        });
-      }
-      else{
-        return fn(new Error('cannot find user'));
-      }
-    });
-  }*/
-
   function restrict(req, res, next){
     if (req.session.user) {
       next();

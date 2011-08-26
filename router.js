@@ -1,4 +1,5 @@
 module.exports = function(app){
+  var handlers = require('./handlers.js');
   /* Routes */
 
   app.get('/', function(req, res){
