@@ -8,13 +8,13 @@ module.exports = function(app){
     });
   });
 
-  app.get('/restricted', [restrict, accessLogger], function(req, res){
+  app.get('/restricted', [handlers.restrict, handlers.accessLogger], function(req, res){
     res.render('restricted', {
       title: 'Restricted Section'
     });
   });
 
-  app.get('/logout', logout, function(req, res){
+  app.get('/logout', handlers.logout, function(req, res){
     res.redirect('home');
   });
 
@@ -24,7 +24,7 @@ module.exports = function(app){
     });
   });
 
-  app.post('/login', login, function(req, res){
+  app.post('/login', handlers.login, function(req, res){
     res.redirect('home');
   });
 
@@ -34,7 +34,7 @@ module.exports = function(app){
     });
   });
 
-  app.post('/registration', register, function(req, res){
+  app.post('/registration', handlers.register, function(req, res){
     res.redirect('back');
   });
 
