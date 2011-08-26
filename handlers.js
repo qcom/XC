@@ -84,6 +84,7 @@ module.exports = function(app){
   }
 
   function register(req, res, next){
+    console.log('handlers.register is called');
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
     var email = req.body.email;
