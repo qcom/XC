@@ -1,4 +1,8 @@
 module.exports = function(app, express){
+  var nib = require('nib');
+  var stylus = require('stylus');
+  var RedisStore = require('connect-redis')(express);
+
   /* Configure */
 
   // Stylus Compiler
