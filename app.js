@@ -6,7 +6,6 @@ var app = module.exports = express.createServer();
 
 require('./environment.js')(app, express);
 require('./messages.js')(app);
-require('./handlers.js')(app);
 require('./router.js')(app);
 
 /* Run App */
