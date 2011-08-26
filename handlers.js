@@ -1,4 +1,4 @@
-
+module.exports = function(app){
   var redis = require('redis');
   var client = redis.createClient();
   var auth = require('./authenticate');
@@ -127,10 +127,6 @@
       });
     }
   }
-
+}
 
 exports.restrict = restrict;
-exports.accessLogger = accessLogger;
-exports.logout = logout;
-exports.login = login;
-exports.register = register;
